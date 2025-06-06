@@ -1,334 +1,360 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Consulta de APIs - Boostr</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #1e1e2f;
-      color: #f0f0f0;
-      margin: 0;
-      padding: 20px;
-    }
-    h1 {
-      text-align: center;
-      color: #90caf9;
-      margin-bottom: 30px;
-    }
-    .section {
-      background-color: #2c2c3c;
-      border-radius: 8px;
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-    }
-    .section h2 {
-      color: #64b5f6;
-      margin-top: 0;
-      margin-bottom: 15px;
-    }
-    .farmacia-card {
-      background-color: #1a1a2a;
-      border-radius: 6px;
-      padding: 15px;
-      margin-bottom: 10px;
-      box-shadow: 0 0 4px rgba(0,0,0,0.4);
-      border-left: 3px solid #64b5f6;
-    }
-    .farmacia-card strong {
-      color: #c3e88d;
-      font-size: 1.1em;
-    }
-    select {
-      background-color: #1a1a2a;
-      color: #f0f0f0;
-      border: 1px solid #555;
-      padding: 10px;
-      border-radius: 5px;
-      margin-bottom: 15px;
-      width: 200px;
-    }
-    .loading {
-      font-style: italic;
-      color: #aaa;
-      text-align: center;
-      padding: 20px;
-    }
-    .error {
-      color: #ff6b6b;
-      background-color: #2d1b1b;
-      padding: 10px;
-      border-radius: 5px;
-      border-left: 3px solid #ff6b6b;
-    }
-    .dato {
-      margin-bottom: 8px;
-      padding: 5px 0;
-    }
-    .dato strong {
-      color: #90caf9;
-    }
-    .refresh-btn {
-      background-color: #64b5f6;
-      color: white;
-      border: none;
-      padding: 8px 15px;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-left: 10px;
-    }
-    .refresh-btn:hover {
-      background-color: #42a5f5;
-    }
-    .success {
-      color: #4caf50;
-      font-weight: bold;
-    }
-  </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>APIs ICC RFG</title>
+    <style>
+        body {
+            width: 100%;
+            margin: 0;
+            background: #EEAECA;
+            background: radial-gradient(circle, rgba(238, 174, 202, 1) 0%, rgba(148, 187, 233, 1) 100%);
+            font-family: 'Lato', sans-serif;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        h2, h3 {
+            font-family: 'Lato', sans-serif;
+            text-align: center;
+            background-color: #1a1a1a;
+            color: white;
+            width: 80%;
+            max-width: 600px;
+            margin: 30px auto 15px auto;
+            border-radius: 12px;
+            padding: 12px 0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+        .section-container {
+            width: 90%;
+            max-width: 960px;
+            margin: 25px auto;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            box-sizing: border-box;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(2px);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 25px;
+            font-size: 17px;
+            border: 1px solid #b0b0b0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+        }
+        table thead {
+            color: white;
+            background: linear-gradient(to right, #3a3a3a, #5a5a5a);
+        }
+        table th, table td {
+            padding: 15px 20px;
+            text-align: left;
+            border: 1px solid #d0d0d0; 
+        }
+        table tbody tr:nth-child(odd) {
+            background-color: #f0f0f0;
+        }
+        table tbody tr:nth-child(even) {
+            background-color: #e0e0e0;
+        }
+        table tbody tr:hover {
+            background-color: #dcdcdc;
+            transition: background-color 0.3s ease;
+        }
+        .error {
+            color: #c0392b;
+            font-weight: bold;
+            text-align: center;
+            padding: 12px;
+            background-color: #fadde1;
+            border: 1px solid #e74c3c;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        .button-link {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            background: linear-gradient(to right, #007bff, #00c6ff);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            font-size: 16px;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .button-link:hover {
+            background-color: #0056b3;
+            background: linear-gradient(to right, #0056b3, #0099cc);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+        }
+        #santoral-info {
+            text-align: center;
+        }
+        #santoral-info p {
+            font-size: 22px;
+            margin: 10px 0;
+            color: #555; 
+        }
+        #santoral-info p:first-of-type {
+            font-weight: normal;
+        }
+        #santoral-info p#santoral-nombre {
+            font-weight: bold;
+            color: #27ae60;
+            font-size: 28px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        #farmacias-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+            padding: 15px;
+        }
+        .farmacia {
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(145deg, #ffffff, #f9f9f9);
+        }
+        .farmacia::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, #6a82fb, #fc5c7d);
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+        }
+        .farmacia:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.25);
+        }
+        .farmacia p {
+            margin: 8px 0;
+            font-size: 17px;
+            text-align: left;
+        }
+        .farmacia p strong {
+            font-size: 20px;
+            color: #004085;
+            display: block;
+            margin-bottom: 8px;
+            text-shadow: 0.5px 0.5px 1px rgba(0,0,0,0.05);
+        }
+
+        @media (max-width: 768px) {
+            h2, h3 {
+                width: 90%;
+                padding: 10px 0;
+                font-size: 1.8em;
+            }
+            .section-container {
+                width: 95%;
+                padding: 20px;
+                margin: 20px auto;
+            }
+            table th, table td {
+                padding: 12px 15px;
+                font-size: 15px;
+            }
+            #farmacias-info {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .farmacia {
+                padding: 20px;
+            }
+        }
+        @media (max-width: 480px) {
+            h2, h3 {
+                font-size: 1.3em;
+                padding: 8px 0;
+            }
+            .section-container {
+                padding: 15px;
+                margin: 15px auto;
+            }
+            table {
+                font-size: 13px;
+            }
+            table th, table td {
+                padding: 10px;
+            }
+            .farmacia p {
+                font-size: 15px;
+            }
+            .farmacia p strong {
+                font-size: 17px;
+            }
+            .button-link {
+                padding: 8px 15px;
+                font-size: 14px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <h1>Dashboard de APIs Boostr</h1>
+    <h2>Clima en Curicó</h2>
+    <div class="section-container">
+        <table id="tabla-clima">
+            <thead>
+                <tr>
+                    <th>Ciudad</th>
+                    <th>Condición</th>
+                    <th>Temperatura</th>
+                    <th>Hora de Actualización</th>
+                </tr>
+            </thead>
+            <tbody>
+                </tbody>
+        </table>
+    </div>
 
-  <div class="section">
-    <h2>📅 Santoral del Día</h2>
-    <button class="refresh-btn" onclick="cargarSantoral()">🔄 Actualizar</button>
-    <div id="santoral" class="loading">Cargando santoral...</div>
-  </div>
+    <h2>Farmacias 24 Horas en Curicó</h2>
+    <div class="section-container">
+        <div id="farmacias-info">
+            </div>
+    </div>
 
-  <div class="section">
-    <h2>🌤️ Información Meteorológica</h2>
-    <label for="clima-ciudad">Selecciona estación meteorológica:</label>
-    <select id="clima-ciudad">
-      <option value="SCIC">Curicó (SCIC)</option>
-      <option value="SCFA">Santiago (SCFA)</option>
-    </select>
-    <button class="refresh-btn" onclick="cargarClimaActual()">🔄 Actualizar</button>
-    <div id="clima" class="loading">Cargando información meteorológica...</div>
-  </div>
+    <div class="section-container" id="santoral-info">
+        <h3>Santoral del Día</h3>
+        <p id="santoral-fecha"></p>
+        <p id="santoral-nombre"></p>
+        </div>
 
-  <div class="section">
-    <h2>🏥 Farmacias 24 Horas</h2>
-    <label for="farmacia-ciudad">Selecciona ciudad:</label>
-    <select id="farmacia-ciudad">
-      <option value="Curicó">Curicó</option>
-      <option value="Santiago">Santiago</option>
-      <option value="Talca">Talca</option>
-      <option value="Rancagua">Rancagua</option>
-      <option value="Temuco">Temuco</option>
-      <option value="Concepción">Concepción</option>
-      <option value="Valparaíso">Valparaíso</option>
-    </select>
-    <button class="refresh-btn" onclick="cargarFarmaciasActual()">🔄 Actualizar</button>
-    <div id="farmacias" class="loading">Cargando farmacias...</div>
-  </div>
-
-  <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    // Configuración de headers para las peticiones
-    const options = {
-      method: 'GET',
-      headers: { 
-        'accept': 'application/json',
-        'User-Agent': 'Mozilla/5.0 (compatible; BootstrAPI/1.0)'
-      },
-      mode: 'cors', // Permitir CORS
-      cache: 'no-cache' // Evitar cache
-    };
-
-    // Función para mostrar santoral
-    function mostrarSantoral(data) {
-      const cont = document.getElementById('santoral');
-      console.log('Datos de santoral recibidos:', data);
-      
-      if (Array.isArray(data) && data.length > 0) {
-        cont.innerHTML = '<div class="success">✅ Datos cargados correctamente</div>' + 
-          data.map(item => 
-            `<div class="dato"><strong>📅 ${item.fecha || 'Fecha no disponible'}</strong>: ${item.santoral || 'Sin información'}</div>`
-          ).join('');
-      } else if (data && data.santoral) {
-        cont.innerHTML = '<div class="success">✅ Datos cargados correctamente</div>' +
-          `<div class="dato"><strong>📅 ${data.fecha || 'Hoy'}</strong>: ${data.santoral}</div>`;
-      } else if (data && typeof data === 'string') {
-        cont.innerHTML = '<div class="success">✅ Datos cargados correctamente</div>' +
-          `<div class="dato"><strong>📅 Santoral:</strong> ${data}</div>`;
-      } else {
-        cont.innerHTML = '<div class="error">❌ No se encontraron datos de santoral</div>';
-      }
-    }
-
-    // Función para mostrar clima
-    function mostrarClima(data) {
-      const cont = document.getElementById('clima');
-      console.log('Datos de clima recibidos:', data);
-      
-      if (data && typeof data === 'object') {
-        let html = '<div class="success">✅ Datos meteorológicos cargados</div>';
-        
-        if (data.name) html += `<div class="dato"><strong>🏙️ Ubicación:</strong> ${data.name}</div>`;
-        if (data.weather && data.weather[0]) {
-          html += `<div class="dato"><strong>☁️ Condición:</strong> ${data.weather[0].description}</div>`;
-          if (data.weather[0].main) html += `<div class="dato"><strong>🌡️ Estado:</strong> ${data.weather[0].main}</div>`;
-        }
-        if (data.main) {
-          if (data.main.temp !== undefined) html += `<div class="dato"><strong>🌡️ Temperatura:</strong> ${data.main.temp}°C</div>`;
-          if (data.main.feels_like !== undefined) html += `<div class="dato"><strong>🤔 Sensación térmica:</strong> ${data.main.feels_like}°C</div>`;
-          if (data.main.humidity !== undefined) html += `<div class="dato"><strong>💧 Humedad:</strong> ${data.main.humidity}%</div>`;
-          if (data.main.pressure !== undefined) html += `<div class="dato"><strong>📊 Presión:</strong> ${data.main.pressure} hPa</div>`;
-        }
-        if (data.wind) {
-          if (data.wind.speed !== undefined) html += `<div class="dato"><strong>💨 Viento:</strong> ${data.wind.speed} m/s</div>`;
-        }
-        if (data.visibility !== undefined) html += `<div class="dato"><strong>👁️ Visibilidad:</strong> ${data.visibility} m</div>`;
-        
-        cont.innerHTML = html;
-      } else {
-        cont.innerHTML = '<div class="error">❌ No se pudieron cargar los datos meteorológicos</div>';
-      }
-    }
-
-    // Función para mostrar farmacias
-    function mostrarFarmacias(data, ciudad) {
-      const contenedor = document.getElementById('farmacias');
-      console.log('Datos de farmacias recibidos:', data);
-      
-      if (!Array.isArray(data)) {
-        contenedor.innerHTML = '<div class="error">❌ Error en el formato de datos de farmacias</div>';
-        return;
-      }
-
-      const filtradas = data.filter(f => 
-        f.city && f.city.toLowerCase().includes(ciudad.toLowerCase()) ||
-        f.commune && f.commune.toLowerCase().includes(ciudad.toLowerCase())
-      );
-      
-      if (filtradas.length === 0) {
-        contenedor.innerHTML = `<div class="error">❌ No se encontraron farmacias 24h en ${ciudad}</div>`;
-        // Mostrar todas las farmacias disponibles como alternativa
-        if (data.length > 0) {
-          contenedor.innerHTML += '<div style="margin-top: 15px;"><strong>Farmacias disponibles en otras ciudades:</strong></div>';
-          const ciudadesDisponibles = [...new Set(data.map(f => f.city || f.commune).filter(c => c))];
-          contenedor.innerHTML += `<div class="dato">Ciudades con farmacias: ${ciudadesDisponibles.slice(0, 10).join(', ')}</div>`;
-        }
-        return;
-      }
-
-      contenedor.innerHTML = `<div class="success">✅ ${filtradas.length} farmacia(s) encontrada(s) en ${ciudad}</div>`;
-      
-      filtradas.forEach(f => {
-        const card = document.createElement('div');
-        card.className = 'farmacia-card';
-        card.innerHTML = `
-          <strong>🏥 ${f.name || 'Farmacia sin nombre'}</strong><br>
-          <div class="dato">📍 <strong>Dirección:</strong> ${f.address || 'Dirección no disponible'}</div>
-          <div class="dato">📞 <strong>Teléfono:</strong> ${f.phone || 'No disponible'}</div>
-          <div class="dato">🏙️ <strong>Comuna:</strong> ${f.city || f.commune || 'No especificada'}</div>
-          ${f.schedule ? `<div class="dato">🕐 <strong>Horario:</strong> ${f.schedule}</div>` : ''}
-        `;
-        contenedor.appendChild(card);
-      });
-    }
-
-    // Función para mostrar errores con datos de respaldo
-    function mostrarError(idElemento, nombre, err) {
-      const elemento = document.getElementById(idElemento);
-      console.error(`Error en ${nombre}:`, err);
-      
-      elemento.innerHTML = `<div class="error">❌ Error al cargar ${nombre}: ${err.message || err}</div>`;
-      
-      // Datos de respaldo (mock) en caso de error
-      setTimeout(() => {
-        if (idElemento === 'santoral') {
-          elemento.innerHTML += '<div style="margin-top: 10px;"><strong>Datos de respaldo:</strong></div>';
-          mostrarSantoral([{fecha: '03-06-2025', santoral: 'San Carlos Lwanga, San Clotilde'}]);
-        }
-        if (idElemento === 'clima') {
-          elemento.innerHTML += '<div style="margin-top: 10px;"><strong>Datos de respaldo:</strong></div>';
-          mostrarClima({
-            name: 'Curicó',
-            weather: [{description: 'Parcialmente nublado', main: 'Clouds'}],
-            main: {temp: 15, feels_like: 13, humidity: 65, pressure: 1013},
-            wind: {speed: 3.2},
-            visibility: 10000
-          });
-        }
-        if (idElemento === 'farmacias') {
-          elemento.innerHTML += '<div style="margin-top: 10px;"><strong>Datos de respaldo:</strong></div>';
-          const mockFarmacias = [
-            {name: 'Farmacia Cruz Verde', address: 'Av. Libertador Bernardo O\'Higgins 123', phone: '+56-75-123-4567', city: 'Curicó'},
-            {name: 'Salcobrand', address: 'Calle Estado 456', phone: '+56-75-987-6543', city: 'Curicó'}
-          ];
-          mostrarFarmacias(mockFarmacias, document.getElementById('farmacia-ciudad').value);
-        }
-      }, 1000);
-    }
-
-    // Cargar santoral
-    function cargarSantoral() {
-      document.getElementById('santoral').innerHTML = '<div class="loading">🔄 Cargando santoral...</div>';
-      
-      fetch('https://api.boostr.cl/santorales.json', options)
-        .then(res => {
-          if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
-          return res.json();
-        })
-        .then(mostrarSantoral)
-        .catch(err => mostrarError('santoral', 'Santoral', err));
-    }
-
-    // Cargar clima
-    function cargarClima(estacion) {
-      document.getElementById('clima').innerHTML = '<div class="loading">🔄 Cargando datos meteorológicos...</div>';
-      
-      fetch(`https://api.boostr.cl/weather/${estacion}.json`, options)
-        .then(res => {
-          if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
-          return res.json();
-        })
-        .then(mostrarClima)
-        .catch(err => mostrarError('clima', `Clima ${estacion}`, err));
-    }
-
-    // Cargar farmacias
-    function cargarFarmaciasPorCiudad(ciudad) {
-      document.getElementById('farmacias').innerHTML = '<div class="loading">🔄 Cargando farmacias...</div>';
-      
-      fetch('https://api.boostr.cl/pharmacies/24h.json', options)
-        .then(res => {
-          if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
-          return res.json();
-        })
-        .then(data => mostrarFarmacias(data, ciudad))
-        .catch(err => mostrarError('farmacias', 'Farmacias', err));
-    }
-
-    // Funciones globales para los botones de refresh
-    window.cargarSantoral = cargarSantoral;
-    window.cargarClimaActual = () => cargarClima(document.getElementById('clima-ciudad').value);
-    window.cargarFarmaciasActual = () => cargarFarmaciasPorCiudad(document.getElementById('farmacia-ciudad').value);
-
-    // Carga inicial de datos
-    cargarSantoral();
-    cargarClima('SCIC'); // Curicó por defecto
-    cargarFarmaciasPorCiudad('Curicó');
-
-    // Event listeners para los selectores
-    document.getElementById('clima-ciudad').addEventListener('change', (e) => {
-      cargarClima(e.target.value);
-    });
-
-    document.getElementById('farmacia-ciudad').addEventListener('change', (e) => {
-      cargarFarmaciasPorCiudad(e.target.value);
-    });
-
-    // Actualización automática cada 5 minutos
-    setInterval(() => {
-      console.log('Actualizando datos automáticamente...');
-      cargarSantoral();
-      cargarClima(document.getElementById('clima-ciudad').value);
-      cargarFarmaciasPorCiudad(document.getElementById('farmacia-ciudad').value);
-    }, 300000); // 5 minutos
-  });
-  </script>
 </body>
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function(event) {
+        const options = { method: 'GET', headers: { accept: 'application/json' } };
+
+        fetch('https://api.boostr.cl/weather/SCIC.json', options)
+            .then(res => res.json())
+            .then(res => cargarClima(res))
+            .catch(err => console.error('Error al cargar clima:', err));
+
+        fetchFarmacias();
+
+        fetch('https://api.boostr.cl/santorales/hoy.json', options)
+            .then(res => res.json())
+            .then(res => cargarSantoral(res))
+            .catch(err => console.error('Error al cargar santoral:', err));
+    });
+
+    async function fetchFarmacias() {
+        try {
+            const res = await fetch('https://api.boostr.cl/pharmacies/24h.json', {
+                headers: { 'Accept': 'application/json' }
+            });
+            const data = await res.json();
+
+            if (!data || data.status !== "success" || !Array.isArray(data.data)) {
+                throw new Error('Formato de datos de farmacias no válido de la API.');
+            }
+
+            const farmacias = data.data.filter(f => {
+                const ciudad = f.city?.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                return ciudad && ciudad.includes('curico');
+            });
+
+            if (farmacias.length === 0) {
+                document.getElementById('farmacias-info').textContent = 'No se encontraron farmacias 24 horas en Curicó.';
+                return;
+            }
+            document.getElementById('farmacias-info').innerHTML = farmacias.map(f => 
+                `<div class="farmacia">
+                    <p><strong>${f.name || 'N/A'}</strong></p>
+                    <p>Dirección: ${f.street || 'N/A'}, ${f.city || 'N/A'}</p>
+                    <p>Teléfono: ${f.phone || 'No disponible'}</p>
+                    ${f.latitude && f.longitude ? 
+                        `<p><a href="https://www.google.com/maps/search/?api=1&query=${parseFloat(f.latitude)},${parseFloat(f.longitude)}" target="_blank" class="button-link">Cómo Llegar</a></p>`
+                        : ''
+                    }
+                </div>`
+            ).join('');
+
+        } catch (e) {
+            console.error('Error al cargar farmacias:', e);
+            document.getElementById('farmacias-info').innerHTML = `<p class="error">Error al cargar farmacias: ${e.message}</p>`;
+        }
+    }
+
+    function cargarClima(res) {
+        const tbodyClima = document.querySelector('#tabla-clima tbody');
+        tbodyClima.innerHTML = '';
+
+        if (res && res.status === "success" && res.data) {
+            const data = res.data;
+            const row = tbodyClima.insertRow();
+            row.innerHTML = `
+                <td>${data.city || 'N/A'}</td>
+                <td>${data.condition || 'N/A'}</td>
+                <td>${data.temperature || 'N/A'}°C</td>
+                <td>${data.updated_at || 'N/A'}</td>
+            `;
+        } else {
+            const row = tbodyClima.insertRow();
+            const cellError = row.insertCell(0);
+            cellError.colSpan = 5;
+            cellError.textContent = "No se pudieron cargar los datos del clima.";
+            cellError.className = "error";
+        }
+    }
+
+    function cargarSantoral(res) {
+        console.log("Response for Santoral:", res);
+
+        const santoralFechaElement = document.getElementById('santoral-fecha');
+        const santoralNombreElement = document.getElementById('santoral-nombre');
+        
+        if (!santoralFechaElement || !santoralNombreElement) {
+            console.error("Error: Los elementos HTML para el santoral (santoral-fecha o santoral-nombre) no fueron encontrados.");
+            return;
+        }
+
+        santoralFechaElement.textContent = '';
+        santoralNombreElement.textContent = '';
+
+        const hoy = new Date();
+        const opcionesFecha = { year: 'numeric', month: 'long', day: 'numeric' };
+        const fechaFormateada = hoy.toLocaleDateString('es-CL', opcionesFecha);
+
+        let nombreSantoral = "No disponible";
+        let errorMessage = "";
+
+        if (res && res.status === "success" && Array.isArray(res.data) && res.data.length > 0) {
+            nombreSantoral = res.data[0];
+        } else {
+            errorMessage = "La respuesta de la API del santoral no fue exitosa o no contiene el nombre del santo en el formato esperado (status: 'success', data: ['nombre_del_santo']).";
+            console.warn(errorMessage, res);
+        }
+
+        santoralFechaElement.textContent = `Fecha actual: ${fechaFormateada}`;
+        
+        if (errorMessage) {
+            santoralNombreElement.textContent = `Error: ${errorMessage}`;
+            santoralNombreElement.className = "error";
+        } else {
+            santoralNombreElement.textContent = `Santo del Día: ${nombreSantoral}`;
+            santoralNombreElement.className = "";
+        }
+    }
+</script>
 </html>
